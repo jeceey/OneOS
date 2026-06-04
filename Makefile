@@ -24,7 +24,7 @@ compile:
 		grub-mkrescue -o oneos.iso iso"
 
 run:
-	qemu-system-i386 -cdrom oneos.iso
+	qemu-system-i386 -cdrom oneos.iso -display cocoa,zoom-to-fit=on
 
 clean:
 	rm -rf *.o *.bin *.iso iso
