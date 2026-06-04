@@ -11,7 +11,9 @@ compile:
 	docker run --rm -v "$(PWD)":/os $(IMAGE_NAME) bash -c "\
 		nasm -f elf32 src/boot.asm -o boot.o && \
 		gcc -m32 -c src/kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra && \
-		ld -m elf_i386 -T src/linker.ld -o oneos.bin boot.o kernel.o && \
+		gcc -m32 -c src/gdt.c -o gdt.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra && \
+		gcc -m32 -c src/idt.c -o idt.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra && \
+		ld -m elf_i386 -T src/linker.ld -o oneos.bin boot.o kernel.o gdt.o idt.o && \
 		mkdir -p iso/boot/grub && \
 		cp oneos.bin iso/boot/ && \
 		echo 'set default=0' > iso/boot/grub/grub.cfg && \
